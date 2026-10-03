@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block title %}Predict — RetentionIQ{% endblock %}
+{% block content %}
+
+<section class="section" style="padding-top:48px;">
+  <div class="section__head">
+    <span class="hero__eyebrow">Score a customer</span>
+    <h2>Enter account details</h2>
+    <p style="max-width:60ch;">These are the same 19 fields the model was trained on &mdash; plan type, add-ons, billing, and tenure.</p>
+  </div>
+
+  <form method="POST" action="{{ url_for('predict') }}" class="glass form-grid">
+
+    <div class="field">
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender">
+        <option value="Female" {{ 'selected' if form_values and form_values.gender=='Female' }}>Female</option>
+        <option value="Male" {{ 'selected' if form_values and form_values.gender=='Male' }}>Male</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="SeniorCitizen">Senior citizen</label>
+      <select id="SeniorCitizen" name="SeniorCitizen">
+        <option value="0" {{ 'selected' if form_values and form_values.SeniorCitizen=='0' }}>No</option>
+        <option value="1" {{ 'selected' if form_values and form_values.SeniorCitizen=='1' }}>Yes</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="Partner">Has a partner</label>
+      <select id="Partner" name="Partner">
+        <option value="No" {{ 'selected' if form_values and form_values.Partner=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.Partner=='Yes' }}>Yes</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="Dependents">Has dependents</label>
+      <select id="Dependents" name="Dependents">
+        <option value="No" {{ 'selected' if form_values and form_values.Dependents=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.Dependents=='Yes' }}>Yes</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="tenure">Tenure (months)</label>
+      <input type="number" min="0" max="100" step="1" id="tenure" name="tenure"
+             value="{{ form_values.tenure if form_values else 12 }}" required>
+    </div>
+
+    <div class="field">
+      <label for="PhoneService">Phone service</label>
+      <select id="PhoneService" name="PhoneService">
+        <option value="Yes" {{ 'selected' if form_values and form_values.PhoneService=='Yes' }}>Yes</option>
+        <option value="No" {{ 'selected' if form_values and form_values.PhoneService=='No' }}>No</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="MultipleLines">Multiple lines</label>
+      <select id="MultipleLines" name="MultipleLines">
+        <option value="No" {{ 'selected' if form_values and form_values.MultipleLines=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.MultipleLines=='Yes' }}>Yes</option>
+        <option value="No phone service" {{ 'selected' if form_values and form_values.MultipleLines=='No phone service' }}>No phone service</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="InternetService">Internet service</label>
+      <select id="InternetService" name="InternetService">
+        <option value="DSL" {{ 'selected' if form_values and form_values.InternetService=='DSL' }}>DSL</option>
+        <option value="Fiber optic" {{ 'selected' if form_values and form_values.InternetService=='Fiber optic' }}>Fiber optic</option>
+        <option value="No" {{ 'selected' if form_values and form_values.InternetService=='No' }}>No internet</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="OnlineSecurity">Online security</label>
+      <select id="OnlineSecurity" name="OnlineSecurity">
+        <option value="No" {{ 'selected' if form_values and form_values.OnlineSecurity=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.OnlineSecurity=='Yes' }}>Yes</option>
+        <option value="No internet service" {{ 'selected' if form_values and form_values.OnlineSecurity=='No internet service' }}>No internet service</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="OnlineBackup">Online backup</label>
+      <select id="OnlineBackup" name="OnlineBackup">
+        <option value="No" {{ 'selected' if form_values and form_values.OnlineBackup=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.OnlineBackup=='Yes' }}>Yes</option>
+        <option value="No internet service" {{ 'selected' if form_values and form_values.OnlineBackup=='No internet service' }}>No internet service</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="DeviceProtection">Device protection</label>
+      <select id="DeviceProtection" name="DeviceProtection">
+        <option value="No" {{ 'selected' if form_values and form_values.DeviceProtection=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.DeviceProtection=='Yes' }}>Yes</option>
+        <option value="No internet service" {{ 'selected' if form_values and form_values.DeviceProtection=='No internet service' }}>No internet service</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="TechSupport">Tech support</label>
+      <select id="TechSupport" name="TechSupport">
+        <option value="No" {{ 'selected' if form_values and form_values.TechSupport=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.TechSupport=='Yes' }}>Yes</option>
+        <option value="No internet service" {{ 'selected' if form_values and form_values.TechSupport=='No internet service' }}>No internet service</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="StreamingTV">Streaming TV</label>
+      <select id="StreamingTV" name="StreamingTV">
+        <option value="No" {{ 'selected' if form_values and form_values.StreamingTV=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.StreamingTV=='Yes' }}>Yes</option>
+        <option value="No internet service" {{ 'selected' if form_values and form_values.StreamingTV=='No internet service' }}>No internet service</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="StreamingMovies">Streaming movies</label>
+      <select id="StreamingMovies" name="StreamingMovies">
+        <option value="No" {{ 'selected' if form_values and form_values.StreamingMovies=='No' }}>No</option>
+        <option value="Yes" {{ 'selected' if form_values and form_values.StreamingMovies=='Yes' }}>Yes</option>
+        <option value="No internet service" {{ 'selected' if form_values and form_values.StreamingMovies=='No internet service' }}>No internet service</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="Contract">Contract</label>
+      <select id="Contract" name="Contract">
+        <option value="Month-to-month" {{ 'selected' if form_values and form_values.Contract=='Month-to-month' }}>Month-to-month</option>
+        <option value="One year" {{ 'selected' if form_values and form_values.Contract=='One year' }}>One year</option>
+        <option value="Two year" {{ 'selected' if form_values and form_values.Contract=='Two year' }}>Two year</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="PaperlessBilling">Paperless billing</label>
+      <select id="PaperlessBilling" name="PaperlessBilling">
+        <option value="Yes" {{ 'selected' if form_values and form_values.PaperlessBilling=='Yes' }}>Yes</option>
+        <option value="No" {{ 'selected' if form_values and form_values.PaperlessBilling=='No' }}>No</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="PaymentMethod">Payment method</label>
+      <select id="PaymentMethod" name="PaymentMethod">
+        <option value="Electronic check" {{ 'selected' if form_values and form_values.PaymentMethod=='Electronic check' }}>Electronic check</option>
+        <option value="Mailed check" {{ 'selected' if form_values and form_values.PaymentMethod=='Mailed check' }}>Mailed check</option>
+        <option value="Bank transfer (automatic)" {{ 'selected' if form_values and form_values.PaymentMethod=='Bank transfer (automatic)' }}>Bank transfer (automatic)</option>
+        <option value="Credit card (automatic)" {{ 'selected' if form_values and form_values.PaymentMethod=='Credit card (automatic)' }}>Credit card (automatic)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="MonthlyCharges">Monthly charges ($)</label>
+      <input type="number" min="0" step="0.01" id="MonthlyCharges" name="MonthlyCharges"
+             value="{{ form_values.MonthlyCharges if form_values else 70.00 }}" required>
+    </div>
+
+    <div class="field">
+      <label for="TotalCharges">Total charges ($)</label>
+      <input type="number" min="0" step="0.01" id="TotalCharges" name="TotalCharges"
+             value="{{ form_values.TotalCharges if form_values else 840.00 }}" required>
+    </div>
+
+    <p class="form-note">Total charges usually tracks tenure &times; monthly charges &mdash; adjust if the account had promo pricing.</p>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn--primary">Run prediction</button>
+    </div>
+  </form>
+
+  {% if result %}
+    {% if result.error %}
+      <div class="error-box">{{ result.error }}</div>
+    {% else %}
+      <div class="glass result">
+        <div class="gauge-wrap">
+          <svg width="180" height="180" viewBox="0 0 180 180">
+            <circle cx="90" cy="90" r="80" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="14"/>
+            <circle class="gauge-ring__fill"
+                    cx="90" cy="90" r="80" fill="none"
+                    stroke="{{ '#fb7185' if result.tone=='coral' else ('#f5a962' if result.tone=='amber' else '#2dd4bf') }}"
+                    stroke-width="14" stroke-linecap="round"
+                    transform="rotate(-90 90 90)"
+                    data-pct="{{ result.probability }}"
+                    data-circumference="502.65"
+                    stroke-dasharray="502.65"
+                    stroke-dashoffset="502.65"/>
+            <text x="90" y="84" text-anchor="middle" font-family="JetBrains Mono" font-size="26" fill="#e8ecf5" font-weight="500">{{ result.probability }}%</text>
+            <text x="90" y="106" text-anchor="middle" font-family="Inter" font-size="12" fill="#8a93aa">churn probability</text>
+          </svg>
+        </div>
+        <div>
+          <span class="risk-pill {{ result.tone }}">{{ result.level }} risk</span>
+          <h3 style="margin-top:14px;">Predicted churn: {{ result.prediction }}</h3>
+          <p>Based on the account details above, here's what would most likely move the needle:</p>
+          <ul class="recs">
+            {% for tip in result.recommendations %}
+              <li>{{ tip }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+</section>
+
+{% endblock %}

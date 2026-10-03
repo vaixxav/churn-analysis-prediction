@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Insights — RetentionIQ{% endblock %}
+{% block content %}
+
+<section class="section" style="padding-top:48px;">
+  <div class="section__head">
+    <span class="hero__eyebrow">Model comparison</span>
+    <h2>Three models, one dataset</h2>
+    <p style="max-width:60ch;">Logistic Regression, Random Forest, and SVM were each trained on the same 80/20 split of the IBM Telco dataset. Logistic Regression is deployed &mdash; it edges out the others on ROC AUC and recall, which matters more here than raw accuracy since missed churners are the expensive mistake.</p>
+  </div>
+
+  <div class="glass table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Accuracy</th>
+          <th>Precision</th>
+          <th>Recall</th>
+          <th>F1 Score</th>
+          <th>ROC AUC</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          <td>{{ row.Model }}{% if row.Model == 'LogisticRegression' %}<span class="best-badge">deployed</span>{% endif %}</td>
+          <td>{{ row.Accuracy }}</td>
+          <td>{{ row.Precision }}</td>
+          <td>{{ row.Recall }}</td>
+          <td>{{ row['F1 Score'] }}</td>
+          <td>{{ row['ROC AUC'] }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6">No comparison report found yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__head">
+    <h2>Confusion matrix</h2>
+    <p style="max-width:60ch;">How the deployed model splits predictions on the held-out test set.</p>
+  </div>
+  <figure class="glass figure">
+    <img src="{{ url_for('static', filename='images/confusion_matrix.png') }}" alt="Confusion matrix for the deployed churn model">
+    <figcaption>Rows are actual outcomes, columns are predicted outcomes.</figcaption>
+  </figure>
+</section>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}About — RetentionIQ{% endblock %}
+{% block content %}
+
+<section class="section" style="padding-top:48px;">
+  <div class="glass prose">
+    <span class="hero__eyebrow">About this project</span>
+    <h1 style="font-size:1.9rem;">Why churn, and why this way</h1>
+    <p>Customer churn is one of the few ML problems where the business case writes itself: it's cheaper to keep a customer than to acquire a new one, and a probability score is only useful if someone can act on it. RetentionIQ is built around that &mdash; every prediction ships with a reason, not just a number.</p>
+
+    <h2>The data</h2>
+    <p>Trained on the IBM Telco Customer Churn dataset (~7,000 accounts). After dropping the customer ID, coercing <code>TotalCharges</code> to numeric, and removing a handful of rows with missing values, the data was label-encoded for binary fields and one-hot encoded (with the first category dropped) for the rest &mdash; 30 features in total.</p>
+
+    <h2>The model</h2>
+    <p>Logistic Regression, Random Forest, and SVM were all trained and evaluated on the same 80/20 split. Logistic Regression was deployed: it has the best ROC AUC (0.852) and recall of the three, and as a linear model its coefficients are easy to reason about when explaining a prediction.</p>
+
+    <h2>Stack</h2>
+    <ul class="stack-list">
+      <li>Python</li><li>pandas</li><li>scikit-learn</li><li>joblib</li><li>Flask</li><li>Jinja2</li>
+    </ul>
+  </div>
+</section>
+
+{% endblock %}

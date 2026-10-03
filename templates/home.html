@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}RetentionIQ — Customer Churn Prediction{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div>
+    <span class="hero__eyebrow">Telco churn model &middot; live inference</span>
+    <h1>Know who's about to leave <span class="hl">before they do.</span></h1>
+    <p class="lead">RetentionIQ scores every customer against a logistic regression model trained on 7,000+ telecom accounts, then tells you exactly which lever &mdash; contract, support, billing &mdash; is driving the risk.</p>
+    <div class="btn-row">
+      <a href="{{ url_for('predict') }}" class="btn btn--primary">Score a customer</a>
+      <a href="{{ url_for('insights') }}" class="btn btn--ghost">View model performance</a>
+    </div>
+  </div>
+
+  <div class="glass signal-card">
+    <div class="signal-card__label">Best model &middot; ROC AUC</div>
+    <div class="signal-card__value">0.852</div>
+    <p style="margin-bottom:0;">Logistic Regression, tuned on 30 engineered features from the IBM Telco dataset.</p>
+    <svg class="wave" viewBox="0 0 400 90" preserveAspectRatio="none">
+      <path d="M0,45" fill="none" stroke="url(#waveGrad)" stroke-width="2.5" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#8b7cf6"/>
+          <stop offset="100%" stop-color="#2dd4bf"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__head">
+    <h2>Three ways to read the signal</h2>
+  </div>
+  <div class="grid-3">
+    <div class="glass card">
+      <h3>Predict</h3>
+      <p>Fill in a customer's plan, billing, and tenure details to get a churn probability and a plain-language risk level.</p>
+      <a href="{{ url_for('predict') }}" class="btn btn--ghost" style="margin-top:8px;">Run a prediction &rarr;</a>
+    </div>
+    <div class="glass card">
+      <h3>Insights</h3>
+      <p>Compare Logistic Regression, Random Forest, and SVM head-to-head on accuracy, precision, recall, and ROC AUC.</p>
+      <a href="{{ url_for('insights') }}" class="btn btn--ghost" style="margin-top:8px;">See the comparison &rarr;</a>
+    </div>
+    <div class="glass card">
+      <h3>Recommend</h3>
+      <p>Every prediction comes with rule-based nudges &mdash; the specific account changes most likely to reduce risk.</p>
+      <a href="{{ url_for('about') }}" class="btn btn--ghost" style="margin-top:8px;">How it works &rarr;</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
